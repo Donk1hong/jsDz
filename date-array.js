@@ -26,8 +26,8 @@ function processDates(arr) {
                     return null;
                 }
 
-                day = parseInt(parts[0], 10);
-                month = parseInt(parts[1], 10);
+                month = parseInt(parts[0], 10);
+                day = parseInt(parts[1], 10);
                 year = parseInt(parts[2], 10);
             } else if (item.includes('-')) {
                 const parts = item.split('-');
@@ -36,8 +36,8 @@ function processDates(arr) {
                     return null;
                 }
 
-                month = parseInt(parts[0], 10);
-                day = parseInt(parts[1], 10);
+                day = parseInt(parts[0], 10);
+                month = parseInt(parts[1], 10);
                 year = parseInt(parts[2], 10);
             } else {
                 return null;
@@ -59,7 +59,7 @@ function processDates(arr) {
             const formattedMonth = String(month).padStart(2, '0');
             const formattedYear = String(year).padStart(2, '0');
 
-            return `${formattedDay}.${formattedMonth}.${formattedYear}`;
+            return `${formattedDay}-${formattedMonth}-${formattedYear}`;
         })
         .filter(item => item !== null);
 }
