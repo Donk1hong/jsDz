@@ -3,26 +3,34 @@ const card = '4561-2612-1234-5467';
 function luna(string) {
     const result = string
         .trim()
-        .replace(/-/g, "");
+        .replace(/-/g, '');
+
+    if (result.length === 0) {
+        return false;
+    }
 
     let sum = 0;
+    let shouldDouble = false;
 
-    for (let index = 0; index < result.length; index++) {
-        const res = result[index];
+    for (let index = result.length - 1; index >= 0; index--) {
+        const currentNumber = Number(result[index]);
 
-        if (isNaN(Number(res))) return false;
-
-        let currentNumber = Number(res);
-
-        if (index % 2 === 0) {
-            currentNumber *= 2;
+        if (Number.isNaN(currentNumber)) {
+            return false;
         }
 
-        if (currentNumber > 9) {
-            currentNumber -= 9;
+        let processedNumber = currentNumber;
+
+        if (shouldDouble) {
+            processedNumber *= 2;
+
+            if (processedNumber > 9) {
+                processedNumber -= 9;
+            }
         }
 
-        sum += currentNumber;
+        sum += processedNumber;
+        shouldDouble = !shouldDouble;
     }
 
     return sum % 10 === 0;
