@@ -1,30 +1,69 @@
-function processDateValid(arr) {
+function processDates(arr) {
     return arr
-        .filter(item => typeof item === 'string' && item.trim() !== '')
-        .map(dateString => {
-            const parts = dateString.split('.');
-            if (parts.length !== 3) return null;
+        .map(item => {
+            if (typeof item !== 'string') {
+                return null;
+            }
 
-            const day = parseInt(parts[0], 10);
-            const month = parseInt(parts[1], 10);
-            const year = parseInt(parts[2], 10);
+            let day;
+            let month;
+            let year;
+
+            if (item.includes('.')) {
+                const parts = item.split('.');
+
+                if (parts.length !== 3) {
+                    return null;
+                }
+
+                day = parseInt(parts[0], 10);
+                month = parseInt(parts[1], 10);
+                year = parseInt(parts[2], 10);
+            } else if (item.includes('/')) {
+                const parts = item.split('/');
+
+                if (parts.length !== 3) {
+                    return null;
+                }
+
+                day = parseInt(parts[0], 10);
+                month = parseInt(parts[1], 10);
+                year = parseInt(parts[2], 10);
+            } else if (item.includes('-')) {
+                const parts = item.split('-');
+
+                if (parts.length !== 3) {
+                    return null;
+                }
+
+                month = parseInt(parts[0], 10);
+                day = parseInt(parts[1], 10);
+                year = parseInt(parts[2], 10);
+            } else {
+                return null;
+            }
 
             if (
-                isNaN(day) || isNaN(month) || isNaN(year) ||
-                day < 1 || day > 31 ||
-                month < 1 || month > 12 ||
-                year < 1900 || year > 2100
+                isNaN(day) ||
+                isNaN(month) ||
+                isNaN(year) ||
+                day < 1 ||
+                day > 31 ||
+                month < 1 ||
+                month > 12
             ) {
                 return null;
             }
 
             const formattedDay = String(day).padStart(2, '0');
             const formattedMonth = String(month).padStart(2, '0');
+            const formattedYear = String(year).padStart(2, '0');
 
-            return `${formattedDay}.${formattedMonth}.${year}`;
+            return `${formattedDay}.${formattedMonth}.${formattedYear}`;
         })
-        .filter(Boolean);
+        .filter(item => item !== null);
 }
 
-const rawData = ["12.05.2025", "invalid", "35.12.2023", "1.1.1990", "07.02.2026"];
-console.log(processDateValid(rawData));
+const rawData = ['10-02-2022', 'тест', '11/12/2023', '00/13/2022', '41/12/2023'];
+
+console.log(processDates(rawData));
