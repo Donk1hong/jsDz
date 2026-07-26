@@ -1,12 +1,55 @@
-const params = {
-    search: 'Вася',
-    take: 10,
+"use strict";
+
+const toDoList = {
+  tasks: [
+    {
+      text: "Помыть посуду",
+      id: 1,
+      priority: 1,
+    },
+  ],
+  addTask: function (task) {
+    this.tasks.push(task);
+    return task;
+  },
+  removeTask: function (id) {
+    return (this.tasks = this.tasks.filter((task) => task.id !== id));
+  },
+  patchTask: function (id, task) {
+    const messageFail = "Такой задачки не существует";
+    const messageSuccess = "Вы успешно изменили задачку";
+    const index = this.tasks.findIndex((e) => e.id === id);
+    if (index !== -1) {
+      this.tasks[index] = {
+        ...this.tasks[index],
+        ...task,
+      };
+      return `${messageSuccess} - ${JSON.stringify(this.tasks[index])}`;
+    }
+
+    return messageFail;
+  },
+  sortByPriority: function () {
+    return this.tasks.sort((a, b) => a.priority - b.priority);
+  },
 };
 
-function query(object) {
-    return new URLSearchParams(object).toString();
-}
+const newTask = {
+  text: "Помытьcя",
+  id: 2,
+  priority: 2,
+};
 
-console.log(query(params));
+const newTask2 = {
+  text: "Помытьcя сегодня",
+  id: 3,
+  priority: 3,
+};
 
-//`search=${search}&take=${take}`
+console.log(toDoList.addTask(newTask));
+console.log(toDoList.addTask(newTask2));
+console.log(toDoList.tasks);
+console.log(toDoList.removeTask(2));
+console.log(toDoList.tasks);
+console.log(toDoList.patchTask(3, newTask));
+console.log(toDoList.sortByPriority());
