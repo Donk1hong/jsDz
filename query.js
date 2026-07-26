@@ -3,7 +3,7 @@
 const toDoList = {
   tasks: [
     {
-      text: "Помыть посуду",
+      title: "Помыть посуду",
       id: 1,
       priority: 1,
     },
@@ -35,13 +35,13 @@ const toDoList = {
 };
 
 const newTask = {
-  text: "Помытьcя",
+  title: "Помытьcя",
   id: 2,
   priority: 2,
 };
 
 const newTask2 = {
-  text: "Помытьcя сегодня",
+  title: "Помытьcя сегодня",
   id: 3,
   priority: 3,
 };
