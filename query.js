@@ -3,53 +3,84 @@
 const toDoList = {
   tasks: [
     {
-      title: "Помыть посуду",
       id: 1,
-      priority: 1,
+      name: "тест",
+      description: "описание",
+      order: 0,
     },
   ],
-  addTask: function (task) {
+
+  addTask(task) {
     this.tasks.push(task);
     return task;
   },
-  removeTask: function (id) {
-    return (this.tasks = this.tasks.filter((task) => task.id !== id));
+
+  removeTask(id) {
+    this.tasks = this.tasks.filter((task) => task.id !== id);
+    return this.tasks;
   },
-  patchTask: function (id, task) {
+
+  patchTask(id, task) {
     const messageFail = "Такой задачки не существует";
     const messageSuccess = "Вы успешно изменили задачку";
-    const index = this.tasks.findIndex((e) => e.id === id);
-    if (index !== -1) {
-      this.tasks[index] = {
-        ...this.tasks[index],
-        ...task,
-      };
-      return `${messageSuccess} - ${JSON.stringify(this.tasks[index])}`;
+
+    const index = this.tasks.findIndex((task) => task.id === id);
+
+    if (index === -1) {
+      return messageFail;
     }
 
-    return messageFail;
+    this.tasks[index] = {
+      ...this.tasks[index],
+      ...task,
+    };
+
+    return `${messageSuccess} - ${JSON.stringify(this.tasks[index])}`;
   },
-  sortByPriority: function () {
-    return this.tasks.sort((a, b) => a.priority - b.priority);
+
+  sortByPriority() {
+    return this.tasks.sort((a, b) => a.order - b.order);
   },
 };
 
 const newTask = {
-  title: "Помытьcя",
-  id: 2,
-  priority: 2,
+  tasks: [
+    {
+      id: 1,
+      name: "тест",
+      description: "описание",
+      order: 0,
+    },
+  ],
 };
 
-const newTask2 = {
-  title: "Помытьcя сегодня",
-  id: 3,
-  priority: 3,
-};
+console.log(
+  toDoList.addTask.call(newTask, {
+    id: 2,
+    name: "Новая задача",
+    description: "Описание",
+    order: 2,
+  }),
+);
 
-console.log(toDoList.addTask(newTask));
-console.log(toDoList.addTask(newTask2));
-console.log(toDoList.tasks);
-console.log(toDoList.removeTask(2));
-console.log(toDoList.tasks);
-console.log(toDoList.patchTask(3, newTask));
-console.log(toDoList.sortByPriority());
+console.log(
+  toDoList.addTask.call(newTask, {
+    id: 3,
+    name: "Срочная задача",
+    description: "Сделать сегодня",
+    order: 1,
+  }),
+);
+
+console.log(
+  toDoList.patchTask.call(newTask, 2, {
+    name: "Изменённая задача",
+    order: 3,
+  }),
+);
+
+console.log(toDoList.sortByPriority.call(newTask));
+
+console.log(toDoList.removeTask.call(newTask, 1));
+
+console.log(newTask.tasks);
