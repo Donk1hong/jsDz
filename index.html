@@ -1,24 +1,114 @@
 <!doctype html>
-<html lang="en">
+<html lang="ru">
   <head>
     <meta charset="UTF-8" />
-    <meta
-      name="viewport"
-      content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0"
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Habbit — Отжимания</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Comfortaa:wght@400;500;700&display=swap"
+      rel="stylesheet"
     />
-    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
-    <title>Document</title>
+    <link rel="stylesheet" href="style.css" />
   </head>
   <body>
-    <input class="number1" style="width: 50px" />
-    <input class="number2" style="width: 50px" />
-    <div class="operation" style="display: block; margin-top: 10px; padding-left: 10px">
-      <button data-operation="+" onclick="calculate(event)">+</button>
-      <button data-operation="-" onclick="calculate(event)">-</button>
-      <button data-operation="*" onclick="calculate(event)">*</button>
-      <button data-operation="/" onclick="calculate(event)">/</button>
-    </div>
-    <p class="result">Результат:</p>
-    <script src="query.js"></script>
+    <main class="app" data-node-id="1:2">
+      <aside class="sidebar">
+        <div class="brand" onclick="location.reload()">
+          <img class="brand__logo" src="icon/logo.svg" alt="Логотип проекта" />
+          <span>Habbit</span>
+        </div>
+
+        <nav class="menu" aria-label="Привычки">
+          <div class="menu__list"></div>
+          <button
+            class="menu__item menu__item--add"
+            onclick="togglePopup()"
+            type="button"
+            aria-label="Добавить привычку"
+          >
+            <img src="icon/add.svg" alt="Добавить" />
+          </button>
+        </nav>
+      </aside>
+
+      <section class="content">
+        <header>
+          <h1>-</h1>
+          <div class="progress" aria-label="Прогресс">
+            <div class="progress__labels">
+              <span class="name">Прогресс</span><span class="percent">%</span>
+            </div>
+            <div class="progress__track"><span></span></div>
+          </div>
+        </header>
+        <section class="days" aria-label="Дни привычки"></section>
+        <section class="next-day" aria-label="Добавить результат дня">
+          <div class="day__number">День --</div>
+          <form class="comment-form" onsubmit="addDays(event)">
+            <label class="comment" for="comment-input">
+              <img class="comment__icon" src="icon/comment.svg" alt="" />
+              <input
+                id="comment-input"
+                name="comment"
+                type="text"
+                placeholder="Комментарий"
+                autocomplete="off"
+              />
+            </label>
+            <button class="done" type="submit">Готово</button>
+          </form>
+        </section>
+      </section>
+    </main>
+    <section class="modal" aria-label="Добавление привычки">
+      <div class="modal__dialog">
+        <button class="modal__close" onclick="togglePopup()" type="button" aria-label="Закрыть">
+          ×
+        </button>
+        <h2>Новая привычка</h2>
+        <p class="modal__label">Иконка</p>
+        <div class="icon-picker" role="group" aria-label="Выберите иконку">
+          <button
+            class="icon-picker__item"
+            type="button"
+            aria-label="Спорт"
+            onclick="setIcon(this, 'sport')"
+          >
+            <img class="icon-picker__dumbbell" src="icon/sport.svg" alt="Спорт" />
+          </button>
+          <button
+            class="icon-picker__item icon-picker__item--selected"
+            type="button"
+            aria-label="Вода"
+            onclick="setIcon(this, 'water')"
+          >
+            <img src="icon/water.svg" alt="Вода" />
+          </button>
+          <button
+            class="icon-picker__item"
+            type="button"
+            onclick="setIcon(this, 'food')"
+            aria-label="Питание"
+          >
+            <img class="icon-picker__food" src="icon/food.svg" alt="Питание" />
+          </button>
+        </div>
+        <form class="habit-form" onsubmit="addHabit(event)">
+          <input type="text" placeholder="Название" name="name" aria-label="Название привычки" />
+          <input
+            type="text"
+            placeholder="Название"
+            hidden
+            name="icon"
+            aria-label="Название привычки"
+          />
+          <input type="number" placeholder="Цель" name="target" aria-label="Цель привычки" />
+          <button class="habit-form__submit" type="submit">Добавить</button>
+        </form>
+      </div>
+    </section>
+    <script src="app.js"></script>
   </body>
 </html>
