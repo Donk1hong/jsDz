@@ -1,20 +1,27 @@
 "use strict";
 
-function boardGames(dice) {
-  if (!dice) {
-    console.log("Вы не передали значение!");
+function ageValidation(dateBirth) {
+  if (!dateBirth) {
     return undefined;
   }
-  const cubes = ["d4", "d6", "d8", "d10", "d12", "d16", "d20"];
-  const finCube = cubes.find((cube) => cube === dice);
-  if (!finCube) {
-    console.log("Такого кубика не существует");
-    return undefined;
+
+  const dateNow = new Date();
+  const dateBefore = new Date(dateBirth);
+  let years = dateNow.getFullYear() - dateBefore.getFullYear();
+
+  if (dateNow.getMonth() < dateBefore.getMonth()) {
+    years = years - 1;
+  } else if (dateNow.getMonth() === dateBefore.getMonth()) {
+    if (dateNow.getDate() < dateBefore.getDate()) {
+      years = years - 1;
+    }
   }
-  const cubeConversion = Number.parseInt(dice.slice(1));
-  const randomFace = Math.floor(Math.random() * (cubeConversion - 1 + 1) + 1);
-  console.log(randomFace);
-  return randomFace;
+
+  if (years <= 14) {
+    return false;
+  }
+
+  return true;
 }
 
-boardGames("d20");
+console.log(ageValidation("2011-9-30"));
