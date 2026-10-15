@@ -8,7 +8,7 @@ class Car {
   constructor(brand, model, mileage) {
     this.#brand = brand;
     this.#model = model;
-    this.#mileage = mileage;
+    this.mileage = mileage;
   }
 
   info() {
@@ -17,7 +17,7 @@ class Car {
 
   set mileage(value) {
     if (typeof value !== "number" || value < 0) {
-      throw new Error("Смифная ошибка");
+      throw new Error("Некорректный пробег");
     }
 
     this.#mileage = value;
