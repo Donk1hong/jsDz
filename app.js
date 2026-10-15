@@ -1,37 +1,34 @@
 "use strict";
 
-const Character = function (race, name, language) {
-  this.race = race;
-  this.name = name;
-  this.language = language;
-};
+class Car {
+  #brand;
+  #model;
+  #mileage;
 
-Character.prototype.speak = function () {
-  console.log(`${this.name}, ${this.language}`);
-};
+  constructor(brand, model, mileage) {
+    this.#brand = brand;
+    this.#model = model;
+    this.#mileage = mileage;
+  }
 
-const Orc = function (race, weapon, name, language) {
-  Character.call(this, race, name, language);
-  this.weapon = weapon;
-};
+  info() {
+    console.log(`${this.#brand}, ${this.#model}, ${this.#mileage}`);
+  }
 
-Orc.prototype = Object.create(Character.prototype);
+  set mileage(value) {
+    if (typeof value !== "number" || value < 0) {
+      throw new Error("Смифная ошибка");
+    }
 
-Orc.prototype.constructor = Orc;
+    this.#mileage = value;
+  }
 
-Orc.prototype.hit = function () {
-  console.log(`Удар оружием: ${this.weapon}`);
-};
+  get mileage() {
+    return this.#mileage;
+  }
+}
 
-const Elf = function (race, spells, name, language) {
-  Character.call(this, race, name, language);
-  this.spells = spells;
-};
-
-Elf.prototype = Object.create(Character.prototype);
-
-Elf.prototype.constructor = Elf;
-
-Elf.prototype.createSpell = function () {
-  console.log(`Создано заклинание: ${this.spells}`);
-};
+const car1 = new Car("BMW", "M5", 2000);
+car1.info();
+car1.mileage = 3000;
+console.log(car1.mileage);
