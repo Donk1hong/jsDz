@@ -1,50 +1,38 @@
 "use strict";
 
-class Character {
-  constructor(race, name, language) {
-    this.race = race;
-    this.name = name;
-    this.language = language;
+class Billing {
+  constructor(amount) {
+    this.amount = amount;
   }
 
-  speak() {
-    console.log(`${this.name}, ${this.language}`);
+  calculateTotal(billingStrategy) {
+    return billingStrategy.price(this.amount);
   }
 }
 
-class Ork extends Character {
-  constructor(race, name, language, weapon) {
-    super(race, name, language);
-    this.weapon = weapon;
-  }
+const fixBilling = {
+  price(amount) {
+    return amount;
+  },
+};
 
-  speak() {
-    console.log(`${this.name}, ${this.language}, ${this.weapon}`);
-  }
+const hourBilling = {
+  hour: 10,
+  price(amount) {
+    return amount * this.hour;
+  },
+};
 
-  hit() {
-    console.log(`Удар оружием: ${this.weapon}`);
-  }
-}
+const itemBilling = {
+  itemCount: 5,
+  price(amount) {
+    return amount * this.itemCount;
+  },
+};
 
-class Elf extends Character {
-  constructor(race, name, language, spells) {
-    super(race, name, language);
-    this.spells = spells;
-  }
-
-  speak() {
-    console.log(`${this.name}, ${this.language}, ${this.spells}`);
-  }
-
-  createSpell() {
-    console.log(`Создано заклинание: ${this.spells}`);
-  }
-}
-
-const ork = new Ork("Orc", "Kristina", "Hjup", "Sword");
-ork.speak();
-ork.hit();
-const elf = new Elf("elf", "Ruslan", "enfis", "stick");
-elf.speak();
-elf.createSpell();
+const billing1 = new Billing(100).calculateTotal(fixBilling);
+console.log(billing1);
+const billing2 = new Billing(100).calculateTotal(hourBilling);
+console.log(billing2);
+const billing3 = new Billing(100).calculateTotal(itemBilling);
+console.log(billing3);
