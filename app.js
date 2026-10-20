@@ -1,38 +1,48 @@
-"use strict";
+'use strict';
 
-class Billing {
-  constructor(amount) {
-    this.amount = amount;
+const URL = 'https://pokeapi.co/api/v2/pokemon/ditto';
+const request = new XMLHttpRequest();
+request.open('GET', URL);
+
+request.addEventListener('load', function () {
+  if (this.status !== 200) {
+    console.log(`Ошибка запроса, статус: ${this.status}`);
+    return;
   }
 
-  calculateTotal(billingStrategy) {
-    return billingStrategy.price(this.amount);
+  try {
+    const data = JSON.parse(this.responseText);
+    const ability = data.abilities[0].ability.url;
+
+    const request = new XMLHttpRequest();
+    request.open('GET', ability);
+    request.addEventListener('load', function () {
+      if (this.status !== 200) {
+        console.log(`Ошибка запроса, статус: ${this.status}`);
+        return;
+      }
+
+      try {
+        const data = JSON.parse(this.responseText);
+        const lang = data.effect_entries.find((a) => a.language.name === 'en');
+
+        if (!lang) {
+          console.log('Такого языка нету');
+          return;
+        }
+
+        console.log(lang.effect);
+      } catch (error) {
+        console.log('Ошибка разбора ответа');
+        return;
+      }
+    });
+
+    request.send();
+  } catch (error) {
+    console.log('Ошибка разбора ответа');
+    return;
   }
-}
+});
 
-const fixBilling = {
-  price(amount) {
-    return amount;
-  },
-};
-
-const hourBilling = {
-  hour: 10,
-  price(amount) {
-    return amount * this.hour;
-  },
-};
-
-const itemBilling = {
-  itemCount: 5,
-  price(amount) {
-    return amount * this.itemCount;
-  },
-};
-
-const billing1 = new Billing(100).calculateTotal(fixBilling);
-console.log(billing1);
-const billing2 = new Billing(100).calculateTotal(hourBilling);
-console.log(billing2);
-const billing3 = new Billing(100).calculateTotal(itemBilling);
-console.log(billing3);
+request.send();
