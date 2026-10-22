@@ -1,48 +1,34 @@
 'use strict';
 
-const URL = 'https://pokeapi.co/api/v2/pokemon/ditto';
-const request = new XMLHttpRequest();
-request.open('GET', URL);
+'use strict';
 
-request.addEventListener('load', function () {
-  if (this.status !== 200) {
-    console.log(`Ошибка запроса, статус: ${this.status}`);
-    return;
+const pokemonUrl = 'https://pokeapi.co/api/v2/pokemon/ditto';
+
+function errorAdd(response, errorMessage) {
+  if (!response.ok) {
+    throw new Error(`${errorMessage}: ${response.status}`);
   }
+}
 
-  try {
-    const data = JSON.parse(this.responseText);
-    const ability = data.abilities[0].ability.url;
-
-    const request = new XMLHttpRequest();
-    request.open('GET', ability);
-    request.addEventListener('load', function () {
-      if (this.status !== 200) {
-        console.log(`Ошибка запроса, статус: ${this.status}`);
-        return;
-      }
-
-      try {
-        const data = JSON.parse(this.responseText);
-        const lang = data.effect_entries.find((a) => a.language.name === 'en');
-
-        if (!lang) {
-          console.log('Такого языка нету');
-          return;
-        }
-
-        console.log(lang.effect);
-      } catch (error) {
-        console.log('Ошибка разбора ответа');
-        return;
-      }
-    });
-
-    request.send();
-  } catch (error) {
-    console.log('Ошибка разбора ответа');
-    return;
-  }
-});
-
-request.send();
+fetch(pokemonUrl)
+  .then((response) => {
+    errorAdd(response, 'Ошибка');
+    return response.json();
+  })
+  .then((pokemon) => {
+    const urlAbility = pokemon.abilities[0].ability.url;
+    return fetch(urlAbility);
+  })
+  .then((response) => {
+    errorAdd(response, 'Ошибка');
+    return response.json();
+  })
+  .then((ability) => {
+    const abl = ability.effect_entries.find((a) => a.language.name === 'en');
+    if (!abl) {
+      throw new Error('Такого языка нету');
+    }
+    console.log(abl.effect);
+  })
+  .catch((error) => console.log(error.message))
+  .finally(() => console.log('Запрос завершился'));
