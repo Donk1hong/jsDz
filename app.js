@@ -1,21 +1,20 @@
 'use strict';
 
-function getLocation() {
+const promise1 = Promise.resolve(30);
+const promise2 = Promise.resolve(50);
+const promise3 = Promise.resolve(100);
+
+function race(promies) {
   return new Promise((resolve, reject) => {
-    navigator.geolocation.getCurrentPosition(
-      (position) => {
-        resolve(position);
-      },
-      (error) => {
-        reject(error);
-      },
-    );
+    for (const promise of promies) {
+      promise.then((data) => resolve(data)).catch((error) => reject(error));
+    }
   });
 }
 
-getLocation()
-  .then((position) => {
-    console.log(`Широта: ${position.coords.latitude}.`);
-    console.log(`Долгота: ${position.coords.longitude}.`);
-  })
-  .catch((error) => console.log(error.message));
+async function test() {
+  const test = await race([promise1, promise2, promise3]);
+  console.log(test);
+}
+
+test();
