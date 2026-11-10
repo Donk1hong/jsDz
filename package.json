@@ -1,0 +1,26 @@
+{
+  "name": "dz",
+  "version": "1.0.0",
+  "description": "Dz purple school",
+  "homepage": "https://github.com/Donk1hong/jsDz#readme",
+  "bugs": {
+    "url": "https://github.com/Donk1hong/jsDz/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Donk1hong/jsDz.git"
+  },
+  "license": "MIT",
+  "author": "DOnk1hong",
+  "type": "module",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "build": "rollup index.js --file bundle.js --format iife",
+    "start": "live-server"
+  },
+  "devDependencies": {
+    "live-server": "^1.2.2",
+    "rollup": "^4.68.2"
+  }
+}
